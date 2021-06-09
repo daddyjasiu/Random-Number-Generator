@@ -1,13 +1,10 @@
 import math
 import matplotlib.pyplot as plotter
 import numpy as np
+import numpy.random as random
 from scipy.stats import chisquare
-from scipy.stats import poisson
-from scipy.stats import expon
-from scipy.stats import norm
-from scipy.stats import chi2_contingency
 import statistics
-
+# np.seterr(divide='ignore', invalid='ignore')
 
 rozkladSerii1 = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
@@ -181,11 +178,16 @@ def P(a, mod, seed, lambdaP, amount):
     L = math.exp(-lambdaP)
     k = 0
     p = 1
+    j = 0
 
     for i in range(0, amount+1):
         while(p > L):
             k += 1
-            p = p * numbersJ[i]
+            p = p * numbersJ[j]
+            j += 1
+
+            if j == (len(numbersJ)-1):
+                j = 0
         
         numbersP.append(k-1)
         k = 0
@@ -220,7 +222,7 @@ def N(a, mod, seed, amount):
     
     return numbersN
 
-def rysujWykres(ciag, name, num_bins, range=[-5, 5]):
+def rysujWykres(ciag, name, num_bins, range=[-5, 10]):
     fig, ax = plotter.subplots()
     ax.hist(ciag, num_bins, range=range, edgecolor='black', density=True)
     ax.set_title(name)
@@ -241,6 +243,9 @@ def median(ciag):
 def testSeriiLong(ciag):
     
     mediana = median(ciag)
+
+    ciagSorted = ciag.copy()
+    ciagSorted.sort()
 
     ciagAiB = []
 
@@ -360,27 +365,48 @@ def oczekiwanaW(ciag):
 
 
 def oczekiwanaN(ciag):
-    pass
+    return srednia(ciag)
+
+def srednia(ciag):
+    ciagSorted = ciag.copy()
+    ciagSorted.sort()
+    return statistics.mean(ciagSorted)
+
+def odchylenieStandardowe(ciag):
+    ciagSorted = ciag.copy()
+    ciagSorted.sort()
+    return statistics.stdev(ciagSorted)
+
+def chiKwadrat(wejscie, perfect):
+    p = chisquare(wejscie, perfect)[1]
+    print(chisquare(wejscie, perfect), p)
+
+    alpha = 0.001
+
+    if p < alpha:
+        print("NIE OK")
+    else:
+        print("OK")
 
 # Zasady dobierania parametrów a, b, p, X0:
 # •"p" powinno być bardzo duże, aby jak najbardziej ograniczyć okresowość (powtarzanie się tych samych liczb)
 # •"a" powinno być bardzo duże i względnie pierwsze z "p", również, aby ograniczyć okresowość
 # •"b" ma mniejsze znaczenie, często przyjmuje się zero
-# •X0można przyjąć jako 1 lub stempel czasu (czas od 1.01.1970)
+# •X0 można przyjąć jako 1 lub stempel czasu (czas od 1.01.1970)
 
 # GENERATOR G INIT
 randomNumbersG = []
-aG = 2                  #  pierwszy parametr generatora
-modG = 11               #  drugi parametr modulo generatora
+aG = 16807              #  pierwszy parametr generatora
+modG = 2147483647       #  drugi parametr modulo generatora
 seedG = 1               #  ziarno generatora
-amountG = 14            #  ilosc docelowo wygenerowanych liczb w G + ziarno
+amountG = 10            #  ilosc docelowo wygenerowanych liczb w G + ziarno
         
 # GENERATOR J INIT      
 randomNumbersJ = []     
-aJ = 7                  #  pierwszy parametr generatora
-modJ = 11               #  drugi parametr modulo generatora
-seedJ = 1               #  ziarno generatora
-amountJ = 14            #  ilosc docelowo wygenerowanych liczb w J + ziarno
+aJ = 16807              #  pierwszy parametr generatora
+modJ = 2147483647       #  drugi parametr modulo generatora
+seedJ = 1234567               #  ziarno generatora
+amountJ = 100           #  ilosc docelowo wygenerowanych liczb w J + ziarno
         
 # GENERATOR B INIT      
 randomNumbersB = []     
@@ -395,7 +421,7 @@ randomNumbersD = []
 aD = 16807              #  pierwszy parametr generatora
 modD = 2147483647       #  drugi parametr modulo generatora
 seedD = 1               #  ziarno generatora
-nD = 100                #  ilosc prob szukania sukcesu rozkladu dwumianowego
+nD = 9                  #  ilosc prob szukania sukcesu rozkladu dwumianowego
 pD = 0.4                #  parametr prawdopodobienstwa sukcesu w D
         
 # GENERATOR P INIT      
@@ -404,14 +430,14 @@ aP = 16807              #  pierwszy parametr generatora
 modP = 2147483647       #  drugi parametr modulo generatora
 seedP = 1               #  ziarno generatora
 amountP = 100000        #  ilosc docelowo wygenerowanych liczb w P + ziarno
-lambdaP = 4             #  parametr Poisonna
+lambdaP = 3             #  parametr Poisonna
         
 # GENERATOR W INIT      
 randomNumbersW = []     
 aW = 16807              #  pierwszy parametr generatora
 modW = 2147483647       #  drugi parametr modulo generatora
 seedW = 1               #  ziarno generatora
-amountW = 100000        #  ilosc docelowo wygenerowanych liczb w W + ziarno
+amountW = 10000        #  ilosc docelowo wygenerowanych liczb w W + ziarno
         
 # GENERATOR N INIT      
 randomNumbersN = []     
@@ -421,45 +447,51 @@ seedN = 1               #  ziarno generatora
 amountN = 100000        #  ilosc docelowo wygenerowanych liczb w N + ziarno
 
 
-# Test Generatora G
+# Generowanie liczb z G
 randomNumbersG = G(aG, modG, seedG, amountG)
 
-# Test Generatora J
+# Generowanie liczb z J
 randomNumbersJ = J(aJ, modJ, seedJ, amountJ)
 
-# Test Generatora B
+# Generowanie liczb z B
 randomNumbersB = B(aB, modB, seedB, amountB, pB)
 
-# Test Generatora D
+# Generowanie liczb z D
 randomNumbersD = D(aD, modD, seedD, pD, nD)
 
-# Test Generatora P
+# Generowanie liczb z P
 randomNumbersP = P(aP, modP, seedP, lambdaP, amountP)
 
-# Test Generatora W
+# Generowanie liczb z W
 randomNumbersW = W(aW, modW, seedW, amountW)
 
-# Test Generatora N
+# Generowanie liczb z N
 randomNumbersN = N(aN, modN, seedN, amountN)
 
 
 # rysujWykres(randomNumbersN, "ROZKŁAD NORMALNY", 100)
 # rysujWykres(randomNumbersW, "ROZKŁAD WYKŁADNICZY", 100)
 
-# testSeriiLong([16, 20, 25, 34, 22, 33, 47, 30, 28, 19, 22, 40, 36, 31, 38])
-# testSeriiShort(randomNumbersG)
+# testSeriiLong([2, 2, 2, 2, 5, 5, 5, 5, 5, 6, 7, 8, 8, 8, 1])
+# testSeriiLong(randomNumbersG)
 
-# arr = [1,2,3,4,5,6,7,8,9]
+poisson = np.random.poisson(oczekiwanaP(randomNumbersP, lambdaP), 100001)
+binom = np.random.binomial(nD, pD, nD+1)
+expon = np.random.exponential(1, 10001)
+normal = np.random.normal(srednia(randomNumbersN), odchylenieStandardowe(randomNumbersN), 100000)
 
-lambdaChi = oczekiwanaP(randomNumbersP, lambdaP)
+chiKwadrat(randomNumbersN, normal)
+# rysujWykres(randomNumbersN, "NORMALNY N", 100)
+# rysujWykres(normal, "NORMAL PYTHON", 100)
 
-data = [randomNumbersP, lambdaChi]
+chiKwadrat(randomNumbersP, poisson)
+# rysujWykres(randomNumbersP, "POISSON P", 100)
+# rysujWykres(poisson, "POISSON PYTHON", 100)
 
-stat, p, dof, expected = chi2_contingency(data)
+chiKwadrat(randomNumbersW, expon)
+# rysujWykres(randomNumbersW, "WYKŁADNICZY W", 100)
+# rysujWykres(expon, "WYKŁADNICZY PYTHON", 100)
 
-alpha = 0.05
-print("p value is " + str(p))
-if p <= alpha:
-    print('Dependent (reject H0)')
-else:
-    print('Independent (H0 holds true)')
+chiKwadrat(randomNumbersD, binom)
+# rysujWykres(randomNumbersD, "DWUMIANOWY D", 100)
+# rysujWykres(binom, "DWUMIANOWY PYTHON", 100)
