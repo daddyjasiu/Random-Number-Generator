@@ -2,6 +2,11 @@ import math
 import matplotlib.pyplot as plotter
 import numpy as np
 from scipy.stats import chisquare
+from scipy.stats import poisson
+from scipy.stats import expon
+from scipy.stats import norm
+from scipy.stats import chi2_contingency
+import statistics
 
 
 rozkladSerii1 = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
@@ -225,12 +230,17 @@ def rysujWykres(ciag, name, num_bins, range=[-5, 5]):
     fig.tight_layout()
     plotter.show()
 
-def testSeriiLong(ciag):
-    
+def median(ciag):
     ciagSorted = ciag.copy()
     ciagSorted.sort()
 
     mediana = ciagSorted[int((len(ciagSorted))/2)] if len(ciagSorted)%2 != 0 else (1/2) * (ciagSorted[int(len(ciagSorted)/2)] + ciagSorted[(int((len(ciagSorted) - 1)/2))])
+    return mediana
+
+
+def testSeriiLong(ciag):
+    
+    mediana = median(ciag)
 
     ciagAiB = []
 
@@ -290,11 +300,8 @@ def testSeriiLong(ciag):
     print("######################################################################################################################")
 
 def testSeriiShort(ciag):
-    
-    ciagSorted = ciag.copy()
-    ciagSorted.sort()
 
-    mediana = ciagSorted[int((len(ciagSorted))/2)] if len(ciagSorted)%2 != 0 else (1/2) * (ciagSorted[int(len(ciagSorted)/2)] + ciagSorted[(int((len(ciagSorted) - 1)/2))])
+    mediana = median(ciag)
 
     ciagAiB = []
 
@@ -338,7 +345,21 @@ def testSeriiShort(ciag):
     print("######################################################################################################################")
 
 
-def chiKwadrat(ciag):
+def oczekiwanaP(ciag, lambdaP):
+    
+    lambdaOczekiwana = []
+
+    for i in range(len(ciag)):
+        lambdaOczekiwana.append(lambdaP)
+
+    return lambdaOczekiwana
+
+
+def oczekiwanaW(ciag):
+    pass
+
+
+def oczekiwanaN(ciag):
     pass
 
 # Zasady dobierania parametrów a, b, p, X0:
@@ -352,12 +373,12 @@ randomNumbersG = []
 aG = 2                  #  pierwszy parametr generatora
 modG = 11               #  drugi parametr modulo generatora
 seedG = 1               #  ziarno generatora
-amountG = 14           #  ilosc docelowo wygenerowanych liczb w G + ziarno
+amountG = 14            #  ilosc docelowo wygenerowanych liczb w G + ziarno
         
 # GENERATOR J INIT      
 randomNumbersJ = []     
-aJ = 7              #  pierwszy parametr generatora
-modJ = 11       #  drugi parametr modulo generatora
+aJ = 7                  #  pierwszy parametr generatora
+modJ = 11               #  drugi parametr modulo generatora
 seedJ = 1               #  ziarno generatora
 amountJ = 14            #  ilosc docelowo wygenerowanych liczb w J + ziarno
         
@@ -382,7 +403,7 @@ randomNumbersP = []
 aP = 16807              #  pierwszy parametr generatora
 modP = 2147483647       #  drugi parametr modulo generatora
 seedP = 1               #  ziarno generatora
-amountP = 100           #  ilosc docelowo wygenerowanych liczb w P + ziarno
+amountP = 100000        #  ilosc docelowo wygenerowanych liczb w P + ziarno
 lambdaP = 4             #  parametr Poisonna
         
 # GENERATOR W INIT      
@@ -422,48 +443,23 @@ randomNumbersW = W(aW, modW, seedW, amountW)
 randomNumbersN = N(aN, modN, seedN, amountN)
 
 
-rysujWykres(randomNumbersN, "ROZKŁAD NORMALNY", 100)
-rysujWykres(randomNumbersW, "ROZKŁAD WYKŁADNICZY", 100)
+# rysujWykres(randomNumbersN, "ROZKŁAD NORMALNY", 100)
+# rysujWykres(randomNumbersW, "ROZKŁAD WYKŁADNICZY", 100)
 
 # testSeriiLong([16, 20, 25, 34, 22, 33, 47, 30, 28, 19, 22, 40, 36, 31, 38])
 # testSeriiShort(randomNumbersG)
 
 # arr = [1,2,3,4,5,6,7,8,9]
-# chisquare(arr)
 
-# print(chisquare(arr))
+lambdaChi = oczekiwanaP(randomNumbersP, lambdaP)
 
-printG(randomNumbersG)
+data = [randomNumbersP, lambdaChi]
 
-# 3. Projekt “generator liczb losowych”
+stat, p, dof, expected = chi2_contingency(data)
 
-# W ramach tego projektu należy zaimplementować generator G całkowitych liczb pseudo-losowych o rozkładzie równomiernym,
-# oczywiście bez wykorzystania dostępnych funkcji czy bibliotek dla generatorów liczb losowych.
-# Nie wolno również wykorzystywać dostępu do takich źródeł „pseudolosowych” danych jak zegar systemowy.
-# Może to być jeden z prostych generatorów opartych na arytmetyce modularnej.
-# Można zaimplementować więcej niż jeden z takich dostępnych w literaturze generatorów.
-
-# Na podstawie generatora G należy następnie stworzyć generator J liczb losowych z rozkładu jednostajnego
-# a przedziale (0, 1), a następnie – na jego podstawie – generatory liczb losowych z rozkładów:
-
-# - Bernoulliego[dwupunktowego](B),
-# - dwumianowego(D),
-# - Poissona(P),
-# - wykładniczego(W),
-# - normalnego (N).
-
-# Następnie należy znaleźć w literaturze metody testowania jakości generatorów liczb losowych i wykonać
-# odpowiednie testy dla generatorów G, J, B, D, P, W, N.
-
-# Przydatne materiały
-# Test chi-kwadrat zgodności rozkładu
-# Testy serii
-# Generator Mersenne Twister
-
-# http://home.agh.edu.pl/~chwiej/mn/generatory_16.pdf
-# https://webhome.phy.duke.edu/~rgb/General/dieharder.php
-# http://simul.iro.umontreal.ca/testu01/tu01.html
-
-# Student może spróbować zaprojektować własny, oryginalny generator G i – przy użyciu testów losowości
-# z powyższych linków –sprawdzić, czy jest on lepszy/gorszy od innych, znanych z literatury prostych generatorów
-# z rozkładu równomiernego wykorzystujących np. arytmetykę modularną.
+alpha = 0.05
+print("p value is " + str(p))
+if p <= alpha:
+    print('Dependent (reject H0)')
+else:
+    print('Independent (H0 holds true)')
