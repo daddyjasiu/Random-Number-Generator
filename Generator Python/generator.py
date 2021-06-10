@@ -4,7 +4,6 @@ import numpy as np
 import numpy.random as random
 from scipy.stats import chisquare
 import statistics
-# np.seterr(divide='ignore', invalid='ignore')
 
 rozkladSerii1 = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
@@ -51,6 +50,8 @@ rozkladSerii2 = [[0, 0, 0, 0, 0,  0, 0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,
                  [0, 0, 5, 7, 9, 11, 13, 15, 16, 17, 19, 20, 21, 22, 23, 24, 24, 25, 26, 26, 27]]
 
 
+rozkladChi = [1, 3.841, 5.991, 7.815, 9.488, 11.070, 12.592, 14.067, 15.507, 16.919, 18.307]
+
 def printG(ciag):
     print("Liczby wygenerowane przez generator liczb calkowitych G:")
     for i in ciag:
@@ -81,7 +82,6 @@ def printD(ciag):
         print(i, end=" ")
     
     print("\n")
-
 
 
 def printP(ciag):
@@ -222,6 +222,7 @@ def N(a, mod, seed, amount):
     
     return numbersN
 
+
 def rysujWykres(ciag, name, num_bins, range=[-5, 10]):
     fig, ax = plotter.subplots()
     ax.hist(ciag, num_bins, range=range, edgecolor='black', density=True)
@@ -231,6 +232,7 @@ def rysujWykres(ciag, name, num_bins, range=[-5, 10]):
     fig.set_size_inches(10, 5)
     fig.tight_layout()
     plotter.show()
+
 
 def median(ciag):
     ciagSorted = ciag.copy()
@@ -279,30 +281,33 @@ def testSeriiLong(ciag):
     k1 = rozkladSerii1[aCounter][bCounter]
     k2 = rozkladSerii2[aCounter][bCounter]
 
-    print("----------------------------------------------------------------------------------------------------------------------")
+    print("---------------------------------------------------------------------------------------------------------------------------------------------------------------")
     print("TEST SERII: DŁUGI")
-    print("----------------------------------------------------------------------------------------------------------------------")
-    print("CIAG WEJSCIOWY:                           ", ciag)
-    print("----------------------------------------------------------------------------------------------------------------------")
-    print("CIAG WEJSCIOWY POSORTOWANY:               ", ciagSorted)
-    print("----------------------------------------------------------------------------------------------------------------------")
+    print("---------------------------------------------------------------------------------------------------------------------------------------------------------------")
+    print("CIAG WEJSCIOWY:                           ", end='') 
+    print(["{0:0.2f}".format(i) for i in ciag])
+    print("---------------------------------------------------------------------------------------------------------------------------------------------------------------")
+    print("CIAG WEJSCIOWY POSORTOWANY:               ", end='')
+    print(["{0:0.2f}".format(i) for i in ciagSorted])
+    print("---------------------------------------------------------------------------------------------------------------------------------------------------------------")
     print("MEDIANA CIAGU WEJSCIOWEGO:                ", mediana)
-    print("----------------------------------------------------------------------------------------------------------------------")
+    print("---------------------------------------------------------------------------------------------------------------------------------------------------------------")
     print("CIAG SERIOWY a & b:                       ", ciagAiB)
-    print("----------------------------------------------------------------------------------------------------------------------")
+    print("---------------------------------------------------------------------------------------------------------------------------------------------------------------")
     print("LICZBA SERII a & b:                       ", liczbaSerii)
-    print("----------------------------------------------------------------------------------------------------------------------")
+    print("---------------------------------------------------------------------------------------------------------------------------------------------------------------")
     print("LICZBA a:                                 ", aCounter)
-    print("----------------------------------------------------------------------------------------------------------------------")
+    print("---------------------------------------------------------------------------------------------------------------------------------------------------------------")
     print("LICZBA b:                                 ", bCounter)
-    print("----------------------------------------------------------------------------------------------------------------------")
+    print("---------------------------------------------------------------------------------------------------------------------------------------------------------------")
     print("ZBIOR KRYTYCZNY:                           (-inf ;", k1, "]","∪", "[", k2, "; +inf]")
-    print("----------------------------------------------------------------------------------------------------------------------")
+    print("---------------------------------------------------------------------------------------------------------------------------------------------------------------")
     print("CZY", liczbaSerii, "∈ (-inf ;", k1, "]","∪", "[", k2, "; +inf]?       ", "NIE" if k1 < liczbaSerii < k2 else "TAK")
-    print("----------------------------------------------------------------------------------------------------------------------")
+    print("---------------------------------------------------------------------------------------------------------------------------------------------------------------")
     print("FINALNY WERDYKT:                          ", "CIĄG DOBRZE LOSOWY" if k1 < liczbaSerii < k2 else "CIAG SŁABO LOSOWY")
-    print("----------------------------------------------------------------------------------------------------------------------")
-    print("######################################################################################################################")
+    print("---------------------------------------------------------------------------------------------------------------------------------------------------------------")
+    print("###############################################################################################################################################################")
+
 
 def testSeriiShort(ciag):
 
@@ -350,54 +355,116 @@ def testSeriiShort(ciag):
     print("######################################################################################################################")
 
 
-def oczekiwanaP(ciag, lambdaP):
-    
-    lambdaOczekiwana = []
-
-    for i in range(len(ciag)):
-        lambdaOczekiwana.append(lambdaP)
-
-    return lambdaOczekiwana
-
-
-def oczekiwanaW(ciag):
-    pass
-
-
-def oczekiwanaN(ciag):
-    return srednia(ciag)
-
 def srednia(ciag):
     ciagSorted = ciag.copy()
     ciagSorted.sort()
     return statistics.mean(ciagSorted)
+
 
 def odchylenieStandardowe(ciag):
     ciagSorted = ciag.copy()
     ciagSorted.sort()
     return statistics.stdev(ciagSorted)
 
-def chiKwadrat(wejscie, perfect):
-    p = chisquare(wejscie, perfect)[1]
-    print(chisquare(wejscie, perfect), p)
 
-    alpha = 0.001
+def oczekiwanaP(lambdaP, ciagNoDups, ciag):
+    
+    result = [0, 0, 0, 0, 0, 0]
+    amount = len(ciag)
 
-    if p < alpha:
-        print("NIE OK")
+    result[0] = (amount*pow(lambdaP, ciagNoDups[0])*math.exp(-lambdaP)/math.factorial(ciagNoDups[0]))
+    result[0] += (amount*pow(lambdaP, ciagNoDups[1])*math.exp(-lambdaP)/math.factorial(ciagNoDups[1]))
+    result[0] += (amount*pow(lambdaP, ciagNoDups[2])*math.exp(-lambdaP)/math.factorial(ciagNoDups[2]))
+    result[1] = (amount*pow(lambdaP, ciagNoDups[3])*math.exp(-lambdaP)/math.factorial(ciagNoDups[3]))
+    result[1] += (amount*pow(lambdaP, ciagNoDups[4])*math.exp(-lambdaP)/math.factorial(ciagNoDups[4]))
+    result[2] = (amount*pow(lambdaP, ciagNoDups[5])*math.exp(-lambdaP)/math.factorial(ciagNoDups[5]))
+    result[2] += (amount*pow(lambdaP, ciagNoDups[6])*math.exp(-lambdaP)/math.factorial(ciagNoDups[6]))
+    result[3] = (amount*pow(lambdaP, ciagNoDups[7])*math.exp(-lambdaP)/math.factorial(ciagNoDups[7]))
+    result[3] += (amount*pow(lambdaP, ciagNoDups[8])*math.exp(-lambdaP)/math.factorial(ciagNoDups[8]))
+    result[4] = (amount*pow(lambdaP, ciagNoDups[9])*math.exp(-lambdaP)/math.factorial(ciagNoDups[9]))
+    result[4] += (amount*pow(lambdaP, ciagNoDups[10])*math.exp(-lambdaP)/math.factorial(ciagNoDups[10]))
+    result[5] += (amount*pow(lambdaP, 11)*math.exp(-lambdaP)/math.factorial(11))
+    result[5] += (amount*pow(lambdaP, ciagNoDups[11])*math.exp(-lambdaP)/math.factorial(ciagNoDups[11]))
+
+    return result
+
+
+def chiKwadratB(ciag, p):
+    
+    alpha = 0.05
+    degFreedom = 1 # dzielimy na dwa kubełki
+
+    observedZero = 0
+    observedOne = 0
+
+    for i in range(len(ciag)):
+        if ciag[i] == 0:
+            observedZero += 1
+        else:
+            observedOne += 1
+
+    estimatedZero = (1-p)*len(ciag)
+    estimatedOne = p*len(ciag)
+
+    chi0 = pow(observedZero - estimatedZero, 2) / estimatedZero
+    chi1 = pow(observedOne - estimatedOne, 2) / estimatedOne
+
+    if chi0 + chi1 < rozkladChi[degFreedom]:
+        print("CIAG POSIADA DOBRE LICZBY Z ROZKŁADU BERNOULLIEGO")
+        print("#######################################################", end='\n\n')
     else:
-        print("OK")
+        print("CIAG POSIADA ZŁE LICZBY Z ROZKŁADU BERNOULLIEGO")
+        print("#######################################################", end='\n\n')
 
-# Zasady dobierania parametrów a, b, p, X0:
-# •"p" powinno być bardzo duże, aby jak najbardziej ograniczyć okresowość (powtarzanie się tych samych liczb)
-# •"a" powinno być bardzo duże i względnie pierwsze z "p", również, aby ograniczyć okresowość
-# •"b" ma mniejsze znaczenie, często przyjmuje się zero
-# •X0 można przyjąć jako 1 lub stempel czasu (czas od 1.01.1970)
+
+def chiKwadratP(ciag, lambdaP):
+        
+    ciagSorted = ciag.copy()
+    ciagSorted.sort()
+
+    ciagNoDups = list(dict.fromkeys(ciagSorted.copy()))
+
+    alpha = 0.05
+    degFreedom = 5 # dzielimy na 6 kubełków
+
+    observed = [0] * 6
+
+    estimated = oczekiwanaP(lambdaP, ciagNoDups, ciag)
+
+    j = 0
+
+    for i in range(len(ciagSorted)):
+        if 0 <= ciag[i] <= 2:
+            observed[0] += 1
+        elif 2 < ciag[i] <= 4:
+            observed[1] += 1
+        elif 4 < ciag[i] <= 6:
+            observed[2] += 1
+        elif 6 < ciag[i] <= 8:
+            observed[3] += 1
+        elif 8 < ciag[i] <= 10:
+            observed[4] += 1
+        else:
+            observed[5] += 1
+
+    chi = 0
+
+    print(observed)
+    print(estimated)
+
+    for i in range(len(observed)):
+        chi += pow(observed[i] - estimated[i], 2) / estimated[i]
+
+    if chi < rozkladChi[degFreedom]:
+        print("CIAG POSIADA DOBRE LICZBY Z ROZKŁADU POISSONA", end='\n\n')
+    else:
+        print("CIAG POSIADA ZŁE LICZBY Z ROZKŁADU POISSONA", end='\n\n')
+
 
 # GENERATOR G INIT
 randomNumbersG = []
 aG = 16807              #  pierwszy parametr generatora
-modG = 2147483647       #  drugi parametr modulo generatora
+modG = 2147       #  drugi parametr modulo generatora
 seedG = 1               #  ziarno generatora
 amountG = 10            #  ilosc docelowo wygenerowanych liczb w G + ziarno
         
@@ -405,15 +472,15 @@ amountG = 10            #  ilosc docelowo wygenerowanych liczb w G + ziarno
 randomNumbersJ = []     
 aJ = 16807              #  pierwszy parametr generatora
 modJ = 2147483647       #  drugi parametr modulo generatora
-seedJ = 1234567               #  ziarno generatora
-amountJ = 100           #  ilosc docelowo wygenerowanych liczb w J + ziarno
+seedJ = 1               #  ziarno generatora
+amountJ = 10           #  ilosc docelowo wygenerowanych liczb w J + ziarno
         
 # GENERATOR B INIT      
 randomNumbersB = []     
 aB = 16807              #  pierwszy parametr generatora
 modB = 2147483647       #  drugi parametr modulo generatora
 seedB = 1               #  ziarno generatora
-amountB = 100           #  ilosc docelowo wygenerowanych liczb w B + ziarno
+amountB = 10        #  ilosc docelowo wygenerowanych liczb w B + ziarno
 pB = 0.4                #  parametr prawdopodobienstwa sukcesu w B
         
 # GENERATOR D INIT      
@@ -421,7 +488,7 @@ randomNumbersD = []
 aD = 16807              #  pierwszy parametr generatora
 modD = 2147483647       #  drugi parametr modulo generatora
 seedD = 1               #  ziarno generatora
-nD = 9                  #  ilosc prob szukania sukcesu rozkladu dwumianowego
+nD = 10                  #  ilosc prob szukania sukcesu rozkladu dwumianowego
 pD = 0.4                #  parametr prawdopodobienstwa sukcesu w D
         
 # GENERATOR P INIT      
@@ -429,7 +496,7 @@ randomNumbersP = []
 aP = 16807              #  pierwszy parametr generatora
 modP = 2147483647       #  drugi parametr modulo generatora
 seedP = 1               #  ziarno generatora
-amountP = 100000        #  ilosc docelowo wygenerowanych liczb w P + ziarno
+amountP = 10         #  ilosc docelowo wygenerowanych liczb w P + ziarno
 lambdaP = 3             #  parametr Poisonna
         
 # GENERATOR W INIT      
@@ -437,14 +504,14 @@ randomNumbersW = []
 aW = 16807              #  pierwszy parametr generatora
 modW = 2147483647       #  drugi parametr modulo generatora
 seedW = 1               #  ziarno generatora
-amountW = 10000        #  ilosc docelowo wygenerowanych liczb w W + ziarno
+amountW = 10         #  ilosc docelowo wygenerowanych liczb w W + ziarno
         
 # GENERATOR N INIT      
 randomNumbersN = []     
 aN = 16807              #  pierwszy parametr generatora
 modN = 2147483647       #  drugi parametr modulo generatora
 seedN = 1               #  ziarno generatora
-amountN = 100000        #  ilosc docelowo wygenerowanych liczb w N + ziarno
+amountN = 10        #  ilosc docelowo wygenerowanych liczb w N + ziarno
 
 
 # Generowanie liczb z G
@@ -472,26 +539,26 @@ randomNumbersN = N(aN, modN, seedN, amountN)
 # rysujWykres(randomNumbersN, "ROZKŁAD NORMALNY", 100)
 # rysujWykres(randomNumbersW, "ROZKŁAD WYKŁADNICZY", 100)
 
-# testSeriiLong([2, 2, 2, 2, 5, 5, 5, 5, 5, 6, 7, 8, 8, 8, 1])
-# testSeriiLong(randomNumbersG)
+print("GENERATOR G TEST SERII")
+testSeriiLong(randomNumbersG)
+print("GENERATOR J TEST SERII")
+testSeriiLong(randomNumbersJ)
+print("GENERATOR B TEST SERII")
+testSeriiLong(randomNumbersB)
+print("GENERATOR D TEST SERII")
+testSeriiLong(randomNumbersD)
+print("GENERATOR P TEST SERII")
+testSeriiLong(randomNumbersP)
+print("GENERATOR W TEST SERII")
+testSeriiLong(randomNumbersW)
+print("GENERATOR N TEST SERII")
+testSeriiLong(randomNumbersN)
 
-poisson = np.random.poisson(oczekiwanaP(randomNumbersP, lambdaP), 100001)
-binom = np.random.binomial(nD, pD, nD+1)
-expon = np.random.exponential(1, 10001)
-normal = np.random.normal(srednia(randomNumbersN), odchylenieStandardowe(randomNumbersN), 100000)
+randomChiB = B(aB, modB, seedB, 100000, pB)
+randomChiP = P(aP, modP, seedP, lambdaP, 10000)
 
-chiKwadrat(randomNumbersN, normal)
-# rysujWykres(randomNumbersN, "NORMALNY N", 100)
-# rysujWykres(normal, "NORMAL PYTHON", 100)
-
-chiKwadrat(randomNumbersP, poisson)
-# rysujWykres(randomNumbersP, "POISSON P", 100)
-# rysujWykres(poisson, "POISSON PYTHON", 100)
-
-chiKwadrat(randomNumbersW, expon)
-# rysujWykres(randomNumbersW, "WYKŁADNICZY W", 100)
-# rysujWykres(expon, "WYKŁADNICZY PYTHON", 100)
-
-chiKwadrat(randomNumbersD, binom)
-# rysujWykres(randomNumbersD, "DWUMIANOWY D", 100)
-# rysujWykres(binom, "DWUMIANOWY PYTHON", 100)
+print()
+print("BERNOULLI CHI-KWADRAT TEST", end='\n\n')
+chiKwadratB(randomChiB, pB)
+print("POISSON CHI-KWADRAT TEST", end='\n\n')
+chiKwadratB(randomChiP, lambdaP)
