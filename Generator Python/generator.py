@@ -449,16 +449,15 @@ def chiKwadratP(ciag, lambdaP):
 
     chi = 0
 
-    print(observed)
-    print(estimated)
-
     for i in range(len(observed)):
         chi += pow(observed[i] - estimated[i], 2) / estimated[i]
 
     if chi < rozkladChi[degFreedom]:
-        print("CIAG POSIADA DOBRE LICZBY Z ROZKŁADU POISSONA", end='\n\n')
+        print("CIAG POSIADA DOBRE LICZBY Z ROZKŁADU POISSONA")
+        print("#######################################################", end='\n\n')
     else:
-        print("CIAG POSIADA ZŁE LICZBY Z ROZKŁADU POISSONA", end='\n\n')
+        print("CIAG POSIADA ZŁE LICZBY Z ROZKŁADU POISSONA")
+        print("#######################################################", end='\n\n')
 
 
 # GENERATOR G INIT
@@ -555,10 +554,10 @@ print("GENERATOR N TEST SERII")
 testSeriiLong(randomNumbersN)
 
 randomChiB = B(aB, modB, seedB, 100000, pB)
-randomChiP = P(aP, modP, seedP, lambdaP, 10000)
+randomChiP = P(aP, modP, seedP, lambdaP, 60000)
 
 print()
-print("BERNOULLI CHI-KWADRAT TEST", end='\n\n')
+print("BERNOULLI CHI-KWADRAT TEST", end='\n-------------------------------------------------------\n')
 chiKwadratB(randomChiB, pB)
-print("POISSON CHI-KWADRAT TEST", end='\n\n')
-chiKwadratB(randomChiP, lambdaP)
+print("POISSON CHI-KWADRAT TEST", end='\n-------------------------------------------------------\n')
+chiKwadratP(randomChiP, lambdaP)
