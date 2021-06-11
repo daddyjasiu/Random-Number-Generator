@@ -463,7 +463,7 @@ def chiKwadratP(ciag, lambdaP):
 # GENERATOR G INIT
 randomNumbersG = []
 aG = 16807              #  pierwszy parametr generatora
-modG = 2147       #  drugi parametr modulo generatora
+modG = 2147             #  drugi parametr modulo generatora
 seedG = 1               #  ziarno generatora
 amountG = 10            #  ilosc docelowo wygenerowanych liczb w G + ziarno
         
@@ -472,14 +472,14 @@ randomNumbersJ = []
 aJ = 16807              #  pierwszy parametr generatora
 modJ = 2147483647       #  drugi parametr modulo generatora
 seedJ = 1               #  ziarno generatora
-amountJ = 10           #  ilosc docelowo wygenerowanych liczb w J + ziarno
+amountJ = 10            #  ilosc docelowo wygenerowanych liczb w J + ziarno
         
 # GENERATOR B INIT      
 randomNumbersB = []     
 aB = 16807              #  pierwszy parametr generatora
 modB = 2147483647       #  drugi parametr modulo generatora
 seedB = 1               #  ziarno generatora
-amountB = 10        #  ilosc docelowo wygenerowanych liczb w B + ziarno
+amountB = 10            #  ilosc docelowo wygenerowanych liczb w B + ziarno
 pB = 0.4                #  parametr prawdopodobienstwa sukcesu w B
         
 # GENERATOR D INIT      
@@ -487,7 +487,7 @@ randomNumbersD = []
 aD = 16807              #  pierwszy parametr generatora
 modD = 2147483647       #  drugi parametr modulo generatora
 seedD = 1               #  ziarno generatora
-nD = 10                  #  ilosc prob szukania sukcesu rozkladu dwumianowego
+nD = 10                 #  ilosc prob szukania sukcesu rozkladu dwumianowego
 pD = 0.4                #  parametr prawdopodobienstwa sukcesu w D
         
 # GENERATOR P INIT      
@@ -495,7 +495,7 @@ randomNumbersP = []
 aP = 16807              #  pierwszy parametr generatora
 modP = 2147483647       #  drugi parametr modulo generatora
 seedP = 1               #  ziarno generatora
-amountP = 10         #  ilosc docelowo wygenerowanych liczb w P + ziarno
+amountP = 10            #  ilosc docelowo wygenerowanych liczb w P + ziarno
 lambdaP = 3             #  parametr Poisonna
         
 # GENERATOR W INIT      
@@ -503,14 +503,14 @@ randomNumbersW = []
 aW = 16807              #  pierwszy parametr generatora
 modW = 2147483647       #  drugi parametr modulo generatora
 seedW = 1               #  ziarno generatora
-amountW = 10         #  ilosc docelowo wygenerowanych liczb w W + ziarno
+amountW = 10            #  ilosc docelowo wygenerowanych liczb w W + ziarno
         
 # GENERATOR N INIT      
 randomNumbersN = []     
 aN = 16807              #  pierwszy parametr generatora
 modN = 2147483647       #  drugi parametr modulo generatora
 seedN = 1               #  ziarno generatora
-amountN = 10        #  ilosc docelowo wygenerowanych liczb w N + ziarno
+amountN = 10            #  ilosc docelowo wygenerowanych liczb w N + ziarno
 
 
 # Generowanie liczb z G
@@ -553,11 +553,33 @@ testSeriiLong(randomNumbersW)
 print("GENERATOR N TEST SERII")
 testSeriiLong(randomNumbersN)
 
-randomChiB = B(aB, modB, seedB, 100000, pB)
-randomChiP = P(aP, modP, seedP, lambdaP, 60000)
+randomChiB = B(aB, modB, seedB, 10000, pB)
+
+randomChiP = P(aP, modP, seedP, lambdaP, 10000)
 
 print()
-print("BERNOULLI CHI-KWADRAT TEST", end='\n-------------------------------------------------------\n')
+print("BERNOULLI CHI-KWADRAT TEST 10000", end='\n-------------------------------------------------------\n')
 chiKwadratB(randomChiB, pB)
-print("POISSON CHI-KWADRAT TEST", end='\n-------------------------------------------------------\n')
+print("POISSON CHI-KWADRAT TEST 10000", end='\n-------------------------------------------------------\n')
+chiKwadratP(randomChiP, lambdaP)
+
+randomChiB = B(aB, modB, seedB, 50000, pB)
+
+randomChiP = P(aP, modP, seedP, lambdaP, 50000)
+
+print()
+print("BERNOULLI CHI-KWADRAT TEST 50000", end='\n-------------------------------------------------------\n')
+chiKwadratB(randomChiB, pB)
+print("POISSON CHI-KWADRAT TEST 50000", end='\n-------------------------------------------------------\n')
+chiKwadratP(randomChiP, lambdaP)
+
+
+randomChiB = B(aB, modB, seedB, 110000, pB)
+
+randomChiP = P(aP, modP, seedP, lambdaP, 110000)
+
+print()
+print("BERNOULLI CHI-KWADRAT TEST 110000", end='\n-------------------------------------------------------\n')
+chiKwadratB(randomChiB, pB)
+print("POISSON CHI-KWADRAT TEST 110000", end='\n-------------------------------------------------------\n')
 chiKwadratP(randomChiP, lambdaP)
