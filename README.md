@@ -7,7 +7,7 @@ ___
 
 ### There are seven generators implemented:
 | Generator | Description |
-|-| ----------- |
+|-|-|
 | G | generates random integers |
 | J | generates random fractions in range (0;1) |
 | B | generates numbers with Bernoulli distribution |
