@@ -22,6 +22,7 @@ ___
 Generator J is constructed using G, and B, D, P, W and N are constructed using J.
 
 </div>
+
 ___
 
 ### Tests outcome:
