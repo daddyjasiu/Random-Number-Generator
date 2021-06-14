@@ -5,9 +5,9 @@
 - Chi-Square tests that check if generated numbers are of right distribution by comparing observed values with estimated values.
 ___
 
-### There are seven generators implemented:
-
 <div align="center">
+
+### There are seven generators implemented:
 
 | Generator | Description |
 |:-:|:-:|
@@ -19,13 +19,15 @@ ___
 | W | generates numbers with exponential distribution |
 | N | generates numbers with normal distribution |
 
-</div>
-
 Generator J is constructed using G, and B, D, P, W and N are constructed using J.
+
+</div>
 ___
 ### Tests outcome:
 I have tested every generator with series tests and the results were as expected: every generator except B and P generates correct pseudo-random numbers. Bernoulli cannot generate "very" random numbers due to the fact that is only generates '0' of '1'. Poisson on the other hand, has a lot duplicate values.
 I have performed Chi-Square tests only for generators B and P. Results for every data set were satisfying.
+
+<div align="center">
 
 | Test for 1000 generated numbers | G | J | B | D | P | W | N |
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
@@ -49,3 +51,5 @@ I have performed Chi-Square tests only for generators B and P. Results for every
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 | Series test | ✔️ | ✔️ | ❌ | ✔️ | ❌| ✔️ | ✔️ |
 | Chi-Square | - | - | ✔️ | - | ✔️ | - | - |
+
+</div>
