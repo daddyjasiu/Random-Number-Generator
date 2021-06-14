@@ -7,7 +7,6 @@ ___
 
 ### There are seven generators implemented:
 <p align="center">
-
 | Generator | Description |
 |:-:|:-:|
 | G | generates random integers |
@@ -17,12 +16,9 @@ ___
 | P | generates numbers with Poisson distribution |
 | W | generates numbers with exponential distribution |
 | N | generates numbers with normal distribution |
-
 </p>
 
-<p align="center">
 Generator J is constructed using G, and B, D, P, W and N are constructed using J.
-</p>
 ___
 ### Tests outcome:
 I have tested every generator with series tests and the results were as expected: every generator except B and P generates correct pseudo-random numbers. Bernoulli cannot generate "very" random numbers due to the fact that is only generates '0' of '1'. Poisson on the other hand, has a lot duplicate values.
