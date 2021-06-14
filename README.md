@@ -21,7 +21,7 @@ ___
 | W | generates numbers with exponential distribution |
 | N | generates numbers with normal distribution |
 
-Generator J is constructed using G, and B, D, P, W and N are constructed using J.
+Generator J is constructed using G. B, D, P, W and N are all constructed using J.
 
 </div>
 
