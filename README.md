@@ -6,7 +6,9 @@
 ___
 
 ### There are seven generators implemented:
+
 <p align="center">
+
 | Generator | Description |
 |:-:|:-:|
 | G | generates random integers |
@@ -16,6 +18,7 @@ ___
 | P | generates numbers with Poisson distribution |
 | W | generates numbers with exponential distribution |
 | N | generates numbers with normal distribution |
+
 </p>
 
 Generator J is constructed using G, and B, D, P, W and N are constructed using J.
