@@ -23,6 +23,7 @@ Generator J is constructed using G, and B, D, P, W and N are constructed using J
 
 </div>
 ___
+
 ### Tests outcome:
 I have tested every generator with series tests and the results were as expected: every generator except B and P generates correct pseudo-random numbers. Bernoulli cannot generate "very" random numbers due to the fact that is only generates '0' of '1'. Poisson on the other hand, has a lot duplicate values.
 I have performed Chi-Square tests only for generators B and P. Results for every data set were satisfying.
