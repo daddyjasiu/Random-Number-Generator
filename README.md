@@ -15,6 +15,7 @@ ___
 | P | generates numbers with Poisson distribution |
 | W | generates numbers with exponential distribution |
 | N | generates numbers with normal distribution |
+
 Generator J is constructed using G, and B, D, P, W and N are constructed using J.
 ___
 ### Tests outcome:
