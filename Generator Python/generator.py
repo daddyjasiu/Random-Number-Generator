@@ -383,7 +383,7 @@ def oczekiwanaP(lambdaP, ciagNoDups, ciag):
     result[3] += (amount*pow(lambdaP, ciagNoDups[8])*math.exp(-lambdaP)/math.factorial(ciagNoDups[8]))
     result[4] = (amount*pow(lambdaP, ciagNoDups[9])*math.exp(-lambdaP)/math.factorial(ciagNoDups[9]))
     result[4] += (amount*pow(lambdaP, ciagNoDups[10])*math.exp(-lambdaP)/math.factorial(ciagNoDups[10]))
-    result[5] += (amount*pow(lambdaP, 11)*math.exp(-lambdaP)/math.factorial(11))
+    result[5] = (amount*pow(lambdaP, 11)*math.exp(-lambdaP)/math.factorial(11))
     result[5] += (amount*pow(lambdaP, ciagNoDups[11])*math.exp(-lambdaP)/math.factorial(ciagNoDups[11]))
 
     return result
@@ -535,8 +535,10 @@ randomNumbersW = W(aW, modW, seedW, amountW)
 randomNumbersN = N(aN, modN, seedN, amountN)
 
 
-# rysujWykres(randomNumbersN, "ROZKŁAD NORMALNY", 100)
-# rysujWykres(randomNumbersW, "ROZKŁAD WYKŁADNICZY", 100)
+rysujWykres(randomNumbersN, "ROZKŁAD NORMALNY", 100)
+rysujWykres(randomNumbersW, "ROZKŁAD WYKŁADNICZY", 100)
+
+
 
 print("GENERATOR G TEST SERII")
 testSeriiLong(randomNumbersG)
