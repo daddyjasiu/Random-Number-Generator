@@ -7,7 +7,7 @@ ___
 
 <div align="center">
 
-### There are seven generators implemented:
+## There are seven generators implemented:
 
 | Generator | Description |
 |:-:|:-:|
@@ -27,14 +27,10 @@ ___
 
 <div align="center">
 
-### Tests outcome:
-
-</div>
+## Tests outcome:
 
 I have tested every generator with series tests and the results were as expected: every generator except B and P generates correct pseudo-random numbers. Bernoulli cannot generate "very" random numbers due to the fact that is only generates '0' of '1'. Poisson on the other hand, has a lot duplicate values.
 I have performed Chi-Square tests only for generators B and P. Results for every data set were satisfying.
-
-<div align="center">
 
 | Test for 1000 generated numbers | G | J | B | D | P | W | N |
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
