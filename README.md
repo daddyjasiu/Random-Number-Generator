@@ -3,6 +3,8 @@
 ### RNG generating numbers from various distributions along with:
 -  Series tests that check if numbers are generated randomly by constructing another series and comparing numbers of series in input with median value
 - Chi-Square tests that check if generated numbers are of right distribution by comparing observed values with estimated values.
+
+For specific and detailed information about the project please read the documentation [POLISH].
 ___
 
 <div align="center">
