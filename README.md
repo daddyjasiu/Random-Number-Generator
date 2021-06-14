@@ -7,7 +7,7 @@ ___
 
 ### There are seven generators implemented:
 | Generator | Description |
-|-|-|
+|:-:|:-:|
 | G | generates random integers |
 | J | generates random fractions in range (0;1) |
 | B | generates numbers with Bernoulli distribution |
@@ -22,24 +22,24 @@ ___
 I have tested every generator with series tests and the results were as expected: every generator except B and P generates correct pseudo-random numbers. Bernoulli cannot generate "very" random numbers due to the fact that is only generates '0' of '1'. Poisson on the other hand, has a lot duplicate values.
 I have performed Chi-Square tests only for generators B and P. Results for every data set were satisfying.
 | Test for 1000 generated numbers | G | J | B | D | P | W | N |
-| - |-|-|-|-|-|-|-|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 | Series test | ✔️ | ✔️ | ❌ | ✔️ | ❌| ✔️ | ✔️ |
 | Chi-Square | - | - | ✔️ | - | ✔️ | - | - |
 <br>
 
 | Test for 10 000 generated numbers | G | J | B | D | P | W | N |
-| - |-|-|-|-|-|-|-|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 | Series test | ✔️ | ✔️ | ❌ | ✔️ | ❌| ✔️ | ✔️ |
 | Chi-Square | - | - | ✔️ | - | ✔️ | - | - |
 <br>
 
 | Test for 50 000 generated numbers | G | J | B | D | P | W | N |
-| - |-|-|-|-|-|-|-|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 | Series test | ✔️ | ✔️ | ❌ | ✔️ | ❌| ✔️ | ✔️ |
 | Chi-Square | - | - | ✔️ | - | ✔️ | - | - |
 <br>
 
 | Test for 110 000 generated numbers | G | J | B | D | P | W | N |
-| - |-|-|-|-|-|-|-|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 | Series test | ✔️ | ✔️ | ❌ | ✔️ | ❌| ✔️ | ✔️ |
 | Chi-Square | - | - | ✔️ | - | ✔️ | - | - |
